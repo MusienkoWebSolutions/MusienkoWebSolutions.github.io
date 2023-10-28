@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Услуги - Musienko Web Solutions</title>
+    <title>Контакты - Musienko Web Solutions</title>
     <style>
-        /* Стили для страницы "Услуги" */
+        /* Стили для страницы "Контакты" */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -47,6 +47,11 @@
             padding: 20px;
         }
 
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
         footer {
             background-color: #0C1524;
             color: #fff;
@@ -59,7 +64,7 @@
     <header>
         <div class="container">
             <img src="MWS, logo (BING AI).jpg" width="350" alt="Musienko Web Solutions Logo">
-            <h1>Услуги Musienko Web Solutions</h1>
+            <h1>Контакты Musienko Web Solutions</h1>
             <nav>
                 <ul>
                     <li><a href="index.html">Главная</a></li>
@@ -73,15 +78,28 @@
 
     <div class="container">
         <section>
-            <h2>Наши Услуги</h2>
-            <p>Мы предоставляем широкий спектр услуг в сфере веб-разработки и дизайна, включая:</p>
-            <ul>
-                <li>Разработку веб-сайтов</li>
-                <li>Дизайн интерфейсов</li>
-                <li>Оптимизацию для поисковых систем (SEO)</li>
-                <li>Интернет-маркетинг</li>
-                <!-- Добавьте свои услуги здесь -->
-            </ul>
+            <h2>Свяжитесь с нами</h2>
+            <div class="contact-form">
+                <form>
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" required><br><br>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required><br><br>
+
+                    <label for="message">Сообщение:</label><br>
+                    <textarea id="message" name="message" rows="4" required></textarea><br><br>
+
+                    <input type="submit" value="Отправить">
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <h2>Контактная информация</h2>
+            <p>Email: example@mail.com</p>
+            <p>Телефон: +123456789</p>
+            <!-- Добавьте другие данные для контакта -->
         </section>
     </div>
 
