@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compressopedia</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        header img {
+            width: 150px;
+            height: auto;
+        }
+
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 8px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 1em;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="Compressopedia, logo (BING AI).jpg" alt="Compressopedia logo">
+        <h1>Compressopedia</h1>
+    </header>
+
+    <div>
+        <label for="wordInput">Введите слово:</label>
+        <input type="text" id="wordInput" required>
+        <button onclick="getUniqueLetters()">Показать уникальные буквы</button>
+        <p id="result"></p>
+    </div>
+
+    <footer>
+        Сайт создан компанией Musienko Web Solutions
+    </footer>
+
+    <script>
+        function getUniqueLetters() {
+            // Получаем значение из поля ввода
+            var word = document.getElementById("wordInput").value;
+    
+            // Получаем массив букв с их количеством
+            var letterCount = {};
+            for (var i = 0; i < word.length; i++) {
+                var letter = word[i].toLowerCase();
+                if (/[a-zа-я]/.test(letter)) { // проверяем, что это буква
+                    letterCount[letter] = (letterCount[letter] || 0) + 1;
+                }
+            }
+    
+            // Вычисляем общее количество букв в слове
+            var totalLetters = word.replace(/[^a-zа-я]/ig, '').length;
+    
+            // Сортируем буквы по вероятности в убывающем порядке
+            var sortedLetters = Object.keys(letterCount).sort(function(a, b) {
+                var probabilityA = letterCount[a] / totalLetters;
+                var probabilityB = letterCount[b] / totalLetters;
+                return probabilityB - probabilityA;
+            });
+    
+            // Генерируем строку с значениями для каждой буквы
+            var resultString = "Общее количество букв: " + totalLetters + "<br>Значения: ";
+            var previousValue = 0; // начальное значение для первой буквы
+            for (var i = 0; i < sortedLetters.length; i++) {
+                var letter = sortedLetters[i];
+                var probability = letterCount[letter] / totalLetters;
+    
+                // Добавляем значение для текущей буквы
+                var currentValue = i === 0 ? 0 : previousValue + probability;
+
+                // Количество знаков после запятой бинарного представления currentValue
+                var decimalPlaces = Math.ceil(Math.log2(1 / probability));
+    
+                // Преобразуем накопленную вероятность в двоичную систему
+                var binaryRepresentation = currentValue.toString(2);
+
+                // Получаем только значения после запятой в бинарном представлении
+                var fractionalPart = binaryRepresentation.split('.')[1] || '0'; // Берем только дробную часть (если есть)
+                fractionalPart = fractionalPart.substr(0, decimalPlaces); // Ограничиваем количество знаков
+    
+                resultString += letter + ": " + fractionalPart + ", ";
+    
+                // Обновляем значение для следующей буквы
+                previousValue = currentValue;
+            }
+    
+            // Убираем последнюю запятую и выводим результат на страницу
+            document.getElementById("result").innerHTML = resultString.slice(0, -2);
+        }
+    </script>                
+    
+</body>
+</html>
