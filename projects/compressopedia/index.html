@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compressopedia</title>
+    <title>Compressopedia Binary Converter</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #ecf0f1;
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,14 +19,20 @@
 
         header {
             text-align: center;
-            padding: 10px;
-            font-size: 1.5em;
+            padding: 20px;
+            background-color: #3498db;
+            color: #fff;
             margin-bottom: 20px;
         }
 
         header img {
-            width: 150px;
+            width: 100px;
             height: auto;
+        }
+
+        header h1 {
+            margin: 10px 0 0;
+            font-size: 2em;
         }
 
         label {
@@ -35,21 +41,24 @@
         }
 
         input {
-            padding: 8px;
+            padding: 10px;
             font-size: 1em;
+            margin-bottom: 10px;
+            width: 200px;
         }
 
         button {
-            padding: 10px;
+            padding: 12px;
             font-size: 1em;
-            background-color: #3498db;
+            background-color: #2ecc71;
             color: #fff;
             border: none;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #2980b9;
+            background-color: #27ae60;
         }
 
         p {
@@ -61,80 +70,59 @@
             margin-top: auto;
             padding: 10px;
             text-align: center;
+            background-color: #3498db;
+            color: #fff;
+            width: 100%;
+        }
+
+        main {
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <header>
         <img src="Compressopedia, logo (BING AI).jpg" alt="Compressopedia logo">
-        <h1>Compressopedia</h1>
+        <h1>Compressopedia Binary Converter</h1>
     </header>
 
-    <div>
-        <label for="wordInput">Введите слово:</label>
-        <input type="text" id="wordInput" required>
-        <button onclick="getUniqueLetters()">Показать уникальные буквы</button>
-        <p id="result"></p>
-    </div>
+    <main>
+        <label for="decimalInput">Введите десятичное число:</label>
+        <input type="text" id="decimalInput" required>
+        <label for="decimalPlacesInput">Укажите количество знаков после запятой:</label>
+        <input type="number" id="decimalPlacesInput" min="0" value="2">
+        <button onclick="convertToBinary()">Перевести в двоичную систему</button>
+        <p id="binaryResult"></p>
+    </main>
 
     <footer>
         Сайт создан компанией Musienko Web Solutions
     </footer>
 
     <script>
-        function getUniqueLetters() {
-            // Получаем значение из поля ввода
-            var word = document.getElementById("wordInput").value;
+        function convertToBinary() {
+            var decimalNumber = parseFloat(document.getElementById("decimalInput").value);
+            var decimalPlaces = parseInt(document.getElementById("decimalPlacesInput").value);
+            var binaryRepresentation;
     
-            // Получаем массив букв с их количеством
-            var letterCount = {};
-            for (var i = 0; i < word.length; i++) {
-                var letter = word[i].toLowerCase();
-                if (/[a-zа-я]/.test(letter)) { // проверяем, что это буква
-                    letterCount[letter] = (letterCount[letter] || 0) + 1;
-                }
+            if (decimalPlaces < 0) {
+                alert("Пожалуйста, введите неотрицательное количество знаков после запятой.");
+                return;
             }
     
-            // Вычисляем общее количество букв в слове
-            var totalLetters = word.replace(/[^a-zа-я]/ig, '').length;
+            // Переводим число в двоичную систему
+            binaryRepresentation = decimalNumber.toString(2);
     
-            // Сортируем буквы по вероятности в убывающем порядке
-            var sortedLetters = Object.keys(letterCount).sort(function(a, b) {
-                var probabilityA = letterCount[a] / totalLetters;
-                var probabilityB = letterCount[b] / totalLetters;
-                return probabilityB - probabilityA;
-            });
-    
-            // Генерируем строку с значениями для каждой буквы
-            var resultString = "Общее количество букв: " + totalLetters + "<br>Значения: ";
-            var previousValue = 0; // начальное значение для первой буквы
-            for (var i = 0; i < sortedLetters.length; i++) {
-                var letter = sortedLetters[i];
-                var probability = letterCount[letter] / totalLetters;
-    
-                // Добавляем значение для текущей буквы
-                var currentValue = i === 0 ? 0 : previousValue + probability;
-
-                // Количество знаков после запятой бинарного представления currentValue
-                var decimalPlaces = Math.ceil(Math.log2(1 / probability));
-    
-                // Преобразуем накопленную вероятность в двоичную систему
-                var binaryRepresentation = currentValue.toString(2);
-
-                // Получаем только значения после запятой в бинарном представлении
-                var fractionalPart = binaryRepresentation.split('.')[1] || '0'; // Берем только дробную часть (если есть)
-                fractionalPart = fractionalPart.substr(0, decimalPlaces); // Ограничиваем количество знаков
-    
-                resultString += letter + ": " + fractionalPart + ", ";
-    
-                // Обновляем значение для следующей буквы
-                previousValue = currentValue;
+            // Обрезаем количество знаков после запятой или добавляем нули, если нужно
+            if (decimalPlaces > 0) {
+                var parts = binaryRepresentation.split('.');
+                parts[1] = parts[1] || ''; // Если нет дробной части, установим пустую строку
+                parts[1] = parts[1].slice(0, decimalPlaces).padEnd(decimalPlaces, '0'); // Обрезаем и добавляем нули
+                binaryRepresentation = parts.join('.');
             }
     
-            // Убираем последнюю запятую и выводим результат на страницу
-            document.getElementById("result").innerHTML = resultString.slice(0, -2);
+            document.getElementById("binaryResult").innerHTML = "Двоичное представление: " + binaryRepresentation;
         }
-    </script>                
-    
+    </script>    
 </body>
 </html>
