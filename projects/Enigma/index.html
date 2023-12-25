@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enigma - Игра в угадывание</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, p {
+      color: #fff;
+    }
+
+    #logo {
+      max-width: 200px;
+      margin-bottom: 10px;
+    }
+
+    #guessInput {
+      padding: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    #submitBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    #devInfo {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <img src="Enigma, logo (BING AI).jpg" alt="Enigma Logo" id="logo">
+  <h1>Enigma - Игра в угадывание</h1>
+
+  <p>Угадайте число от 1 до 100:</p>
+
+  <input type="number" id="guessInput" placeholder="Введите ваш вариант">
+  <button onclick="checkGuess()" id="submitBtn">Проверить</button>
+
+  <div id="result"></div>
+</div>
+
+<div id="devInfo">
+  <p>Версия 1.0</p>
+  <p>Разработано Musienko Web Solutions</p>
+</div>
+
+<script>
+  // Генерация случайного числа от 1 до 100
+  const secretNumber = Math.floor(Math.random() * 100) + 1;
+
+  let attempts = 0;
+
+  function checkGuess() {
+    const guess = parseInt(document.getElementById('guessInput').value);
+
+    if (isNaN(guess) || guess < 1 || guess > 100) {
+      alert('Пожалуйста, введите число от 1 до 100.');
+      return;
+    }
+
+    attempts++;
+
+    const resultElement = document.getElementById('result');
+
+    if (guess === secretNumber) {
+      resultElement.style.color = '#4caf50';
+      resultElement.innerHTML = `Поздравляем! Вы угадали число ${secretNumber} за ${attempts} попыток.`;
+      document.getElementById('submitBtn').disabled = true;
+    } else if (guess < secretNumber) {
+      resultElement.style.color = '#2196f3';
+      resultElement.innerHTML = 'Попробуйте число больше.';
+    } else {
+      resultElement.style.color = '#f44336';
+      resultElement.innerHTML = 'Попробуйте число меньше.';
+    }
+  }
+</script>
+
+</body>
+</html>
