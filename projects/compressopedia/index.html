@@ -3,126 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compressopedia Binary Converter</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #ecf0f1;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        header {
-            text-align: center;
-            padding: 20px;
-            background-color: #3498db;
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        header img {
-            width: 100px;
-            height: auto;
-        }
-
-        header h1 {
-            margin: 10px 0 0;
-            font-size: 2em;
-        }
-
-        label {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-
-        input {
-            padding: 10px;
-            font-size: 1em;
-            margin-bottom: 10px;
-            width: 200px;
-        }
-
-        button {
-            padding: 12px;
-            font-size: 1em;
-            background-color: #2ecc71;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #27ae60;
-        }
-
-        p {
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 10px;
-            text-align: center;
-            background-color: #3498db;
-            color: #fff;
-            width: 100%;
-        }
-
-        main {
-            text-align: center;
-        }
-    </style>
+    <title>Repeat Number</title>
 </head>
 <body>
-    <header>
-        <img src="Compressopedia, bg-free logo (BING AI).png" alt="Compressopedia logo">
-        <h1>Compressopedia Binary Converter</h1>
-    </header>
 
-    <main>
-        <label for="decimalInput">Введите десятичное число:</label>
-        <input type="text" id="decimalInput" required>
-        <label for="decimalPlacesInput">Укажите количество знаков после запятой:</label>
-        <input type="number" id="decimalPlacesInput" min="0" value="2">
-        <button onclick="convertToBinary()">Перевести в двоичную систему</button>
-        <p id="binaryResult"></p>
-    </main>
+    <h2>Введите два числа:</h2>
+    <label for="inputNumber1">Первое число:</label>
+    <input type="number" id="inputNumber1" placeholder="Введите первое число" required>
+    
+    <label for="inputNumber2">Второе число:</label>
+    <input type="number" id="inputNumber2" placeholder="Введите второе число" required>
+    
+    <button onclick="repeatNumber()">Повторить число</button>
 
-    <footer>
-        Сайт создан компанией Musienko Web Solutions
-    </footer>
+    <h3>Результат:</h3>
+    <p id="result"></p>
 
     <script>
-        function convertToBinary() {
-            var decimalNumber = parseFloat(document.getElementById("decimalInput").value);
-            var decimalPlaces = parseInt(document.getElementById("decimalPlacesInput").value);
-            var binaryRepresentation;
-    
-            if (decimalPlaces < 0) {
-                alert("Пожалуйста, введите неотрицательное количество знаков после запятой.");
+        function repeatNumber() {
+            // Получаем значения из полей ввода
+            var number1 = parseFloat(document.getElementById('inputNumber1').value);
+            var number2 = parseInt(document.getElementById('inputNumber2').value);
+
+            // Проверяем, являются ли number1 и number2 числами
+            if (isNaN(number1) || isNaN(number2)) {
+                alert('Пожалуйста, введите корректные числа.');
                 return;
             }
-    
-            // Переводим число в двоичную систему
-            binaryRepresentation = decimalNumber.toString(2);
-    
-            // Обрезаем количество знаков после запятой или добавляем нули, если нужно
-            if (decimalPlaces > 0) {
-                var parts = binaryRepresentation.split('.');
-                parts[1] = parts[1] || ''; // Если нет дробной части, установим пустую строку
-                parts[1] = parts[1].slice(0, decimalPlaces).padEnd(decimalPlaces, '0'); // Обрезаем и добавляем нули
-                binaryRepresentation = parts.join('.');
+
+            // Получаем целую и дробную части числа
+            var integerPart = Math.floor(number1);
+            var decimalPart = number1 - integerPart;
+
+            // Генерируем строку, повторяющую дробную часть number2 раз
+            var resultString = integerPart + ' ';
+            for (var i = 0; i < number2; i++) {
+                resultString += decimalPart + ' ';
             }
-    
-            document.getElementById("binaryResult").innerHTML = "Двоичное представление: " + binaryRepresentation;
+
+            // Выводим результат
+            document.getElementById('result').innerText = 'Результат: ' + resultString;
         }
-    </script>    
+    </script>
+
 </body>
 </html>
