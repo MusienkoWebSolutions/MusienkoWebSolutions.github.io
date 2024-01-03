@@ -208,14 +208,16 @@
         resultElement.style.color = '#4caf50';
         resultElement.innerHTML = `Поздравляем! Вы угадали число ${secretNumber} за ${10 - attempts} попыток.`;
         document.getElementById('submitBtn').disabled = true;
+      } else if (attempts === 0) {
+        resultElement.style.color = '#f44336';
+        resultElement.innerHTML = `Вы исчерпали все попытки! Секретное число было ${secretNumber}.`;
+        document.getElementById('submitBtn').disabled = true;
+      } else if (guess < secretNumber) {
+        resultElement.style.color = '#2196f3';
+        resultElement.innerHTML = 'Попробуйте число больше.';
       } else {
-        if (guess < secretNumber) {
-          resultElement.style.color = '#2196f3';
-          resultElement.innerHTML = 'Попробуйте число больше.';
-        } else {
-          resultElement.style.color = '#f44336';
-          resultElement.innerHTML = 'Попробуйте число меньше.';
-        }
+        resultElement.style.color = '#f44336';
+        resultElement.innerHTML = 'Попробуйте число меньше.';
       }
     }
 
