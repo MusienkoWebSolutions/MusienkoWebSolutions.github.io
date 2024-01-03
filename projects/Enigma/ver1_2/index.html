@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enigma - Игра в угадывание</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, p {
+      color: #fff;
+    }
+
+    #logo {
+      max-width: 200px;
+      margin-bottom: 10px;
+    }
+
+    #guessInput {
+      padding: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    #difficulty {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #fff;
+      color: #000;
+      border: 2px solid;
+      border-radius: 4px;
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .gameButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .gameButton:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    #devInfo {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+<div id="logoHeader">
+    <img src="../Enigma, logo (BING AI).jpg" alt="Enigma Logo" id="logo">
+    <h1>Enigma - Игра в угадывание</h1>
+</div>
+
+<div id="startScreen">
+    <p>Выберите уровень сложности:</p>
+    <select id="difficulty">
+      <option value="easy">Легкий</option>
+      <option value="medium">Средний</option>
+      <option value="hard">Тяжелый</option>
+    </select>
+    <button onclick="startGame()" class="gameButton">Начать игру</button>
+</div>
+
+<div id="gameScreen" style="display: none;">
+    <p id="guessPrompt"></p>
+    <input type="number" id="guessInput" placeholder="Введите ваш вариант">
+    <button onclick="checkGuess()" class="gameButton">Проверить</button>
+    <div id="result"></div>
+    <p id="attempts"></p>
+    <button onclick="giveHint()" class="gameButton">Подсказка</button>
+    <button onclick="restartGame()" class="gameButton">Перезапустить игру</button>
+</div>
+
+<div id="devInfo">
+    <p>Версия 1.2</p>
+    <p>Разработано Musienko Web Solutions</p>
+</div>
+
+<script>
+    let secretNumber;
+    let attempts;
+    let maxNumber;
+    let lowerBound = 1;
+    let upperBound;
+    let lastGuess;
+    let hintCount = 0;
+
+    function setDifficulty() {
+      const difficulty = document.getElementById('difficulty').value;
+      switch (difficulty) {
+        case 'easy':
+          maxNumber = 50;
+          attempts = 10;
+          break;
+        case 'medium':
+          maxNumber = 100;
+          attempts = 10;
+          break;
+        case 'hard':
+          maxNumber = 200;
+          attempts = 5;
+          break;
+      }
+      secretNumber = Math.floor(Math.random() * maxNumber) + 1;
+      upperBound = maxNumber;
+      document.getElementById('guessPrompt').innerHTML = `Угадайте число от 1 до ${maxNumber}:`;
+      document.getElementById('attempts').innerHTML = 'Осталось попыток: ' + attempts;
+    }
+
+    function startGame() {
+      setDifficulty();
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('gameScreen').style.display = 'block';
+    }
+
+    function restartGame() {
+      hintCount = 0;
+      document.getElementById('startScreen').style.display = 'block';
+      document.getElementById('gameScreen').style.display = 'none';
+      document.getElementById('result').innerHTML = '';
+      document.getElementById('guessInput').value = '';
+      document.getElementById('submitBtn').disabled = false;  // Включить кнопку "Проверить" обратно
+    }
+
+    function giveHint() {
+      const hintElement = document.getElementById('result');
+      if (lastGuess === secretNumber) {
+        hintElement.style.color = '#4caf50';
+        hintElement.innerHTML = 'Поздравляем! Вы уже выиграли! Наслаждайтесь своей победой! 🎉';
+        return;
+      }
+      hintCount++;
+      switch (hintCount) {
+        case 1:
+          hintElement.style.color = '#2196f3';
+          hintElement.innerHTML = `Подсказка: секретное число ${secretNumber % 2 === 0 ? 'четное' : 'нечетное'}.`;
+          break;
+        case 2:
+          const lowerBound = Math.max(1, secretNumber - Math.floor(Math.random() * 5));
+          const upperBound = Math.min(maxNumber, secretNumber + Math.floor(Math.random() * 5) + 1);
+          hintElement.style.color = '#2196f3';
+          hintElement.innerHTML = `Подсказка: секретное число находится между ${lowerBound} и ${upperBound}.`;
+          break;
+        case 3:
+          hintElement.style.color = '#2196f3';
+          hintElement.innerHTML = 'Вы все еще здесь? Не сдавайтесь, вы почти угадали!';
+          break;
+        case 4:
+          hintElement.style.color = '#4caf50';
+          hintElement.innerHTML = `Хорошо, я вам помогу. Секретное число - это ${secretNumber}.`;
+          break;
+        default:
+          hintElement.style.color = '#f44336';
+          hintElement.innerHTML = 'Вы использовали все подсказки. Попробуйте угадать число самостоятельно!';
+      }
+    }
+
+    function checkGuess() {
+      const guess = parseInt(document.getElementById('guessInput').value);
+  
+      if (isNaN(guess) || guess < 1 || guess > maxNumber) {
+        alert(`Пожалуйста, введите число от 1 до ${maxNumber}.`);
+        return;
+      }
+  
+      attempts--;
+      document.getElementById('attempts').innerHTML = 'Осталось попыток: ' + attempts;
+  
+      const resultElement = document.getElementById('result');
+
+      lastGuess = guess;
+  
+      if (guess === secretNumber) {
+        resultElement.style.color = '#4caf50';
+        resultElement.innerHTML = `Поздравляем! Вы угадали число ${secretNumber} за ${10 - attempts} попыток.`;
+        document.getElementById('submitBtn').disabled = true;
+      } else {
+        if (guess < secretNumber) {
+          resultElement.style.color = '#2196f3';
+          resultElement.innerHTML = 'Попробуйте число больше.';
+        } else {
+          resultElement.style.color = '#f44336';
+          resultElement.innerHTML = 'Попробуйте число меньше.';
+        }
+      }
+    }
+
+    // Установка начальной сложности
+    setDifficulty();
+</script>
+
+</body>
+</html>
