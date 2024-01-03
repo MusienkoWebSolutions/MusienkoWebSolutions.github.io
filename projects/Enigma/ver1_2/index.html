@@ -132,7 +132,7 @@
           break;
         case 'hard':
           maxNumber = 200;
-          attempts = 5;
+          attempts = 10;
           break;
       }
       secretNumber = Math.floor(Math.random() * maxNumber) + 1;
@@ -161,6 +161,11 @@
       if (lastGuess === secretNumber) {
         hintElement.style.color = '#4caf50';
         hintElement.innerHTML = 'Поздравляем! Вы уже выиграли! Наслаждайтесь своей победой! 🎉';
+        return;
+      }
+      if (attempts === 0) {
+        hintElement.style.color = '#4caf50';
+        hintElement.innerHTML = 'К сожалению вы проиграли, подсказка вам уже не поможет!';
         return;
       }
       hintCount++;
