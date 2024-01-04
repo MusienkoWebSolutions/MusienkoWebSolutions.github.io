@@ -1,50 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repeat Number</title>
+<style>
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #1a1a2e;
+  color: white;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  color: #ddd;
+  text-align: center;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+h2 {
+  color: #ddd;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+p {
+  color: #ddd;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 4px;
+  background-color: #0f3460;
+  color: white;
+}
+
+button {
+  background-color: #16213e;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.output {
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  color: #ddd;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #ddd;
+  text-shadow: 2px 2px 4px #000000;
+}
+</style>
 </head>
 <body>
 
-    <h2>Введите два числа:</h2>
-    <label for="inputNumber1">Первое число:</label>
-    <input type="number" id="inputNumber1" placeholder="Введите первое число" required>
-    
-    <label for="inputNumber2">Второе число:</label>
-    <input type="number" id="inputNumber2" placeholder="Введите второе число" required>
-    
-    <button onclick="repeatNumber()">Повторить число</button>
+<div class="container">
+  <h1>compressopedia</h1>
+  <img src="Compressopedia, bg-free logo (BING AI).png" alt="Logo" style="display: block; margin-left: auto; margin-right: auto; width: 35%;">
+  
+  <p>Добро пожаловать на compressopedia! Этот сайт использует метод Шеннона для кодирования слов. Введите слово, и сайт выведет уникальные символы в порядке не возрастания их количества, а также соответствующую двоичную дробь.</p>
 
-    <h3>Результат:</h3>
-    <p id="result"></p>
+  <h2>Введите слово:</h2>
 
-    <script>
-        function repeatNumber() {
-            // Получаем значения из полей ввода
-            var number1 = parseFloat(document.getElementById('inputNumber1').value);
-            var number2 = parseInt(document.getElementById('inputNumber2').value);
+  <input type="text" id="inputWord" value="">
+  <button onclick="countChars()">Подсчитать</button>
 
-            // Проверяем, являются ли number1 и number2 числами
-            if (isNaN(number1) || isNaN(number2)) {
-                alert('Пожалуйста, введите корректные числа.');
-                return;
-            }
+  <div id="output_table" class="output"></div>
 
-            // Получаем целую и дробную части числа
-            var integerPart = Math.floor(number1);
-            var decimalPart = number1 - integerPart;
+  <div id="output_code" class="output"></div>
 
-            // Генерируем строку, повторяющую дробную часть number2 раз
-            var resultString = integerPart + ' ';
-            for (var i = 0; i < number2; i++) {
-                resultString += decimalPart + ' ';
-            }
+  <footer>
+    <p>Разработано компанией Musienko Web Solutions</p>
+  </footer>
+</div>
 
-            // Выводим результат
-            document.getElementById('result').innerText = 'Результат: ' + resultString;
-        }
-    </script>
+<script>
+function countChars() {
+  var str = document.getElementById("inputWord").value;
+  var totalChars = str.length;
+  var charCount = {};
+  for(var i = 0; i < str.length; i++) {
+    charCount[str[i]] = (charCount[str[i]] || 0) + 1;
+  }
+  var sortedChars = Object.entries(charCount).sort((a, b) => b[1] - a[1]);
+  var output_table = "";
+  var output_code = "Код Шеннона: ";
+  var cumulativeProbability = 0;
+  for(var i = 0; i < sortedChars.length; i++) {
+    var fraction = sortedChars[i][1] / totalChars;
+    var l = Math.ceil(-Math.log2(fraction));
+    var binaryFraction = (cumulativeProbability % 1).toString(2).substring(2);
+    binaryFraction = binaryFraction.padEnd(l, '0').substring(0, l);
+    output_table += sortedChars[i][0] + ": " + "0." + binaryFraction + ", l: " + l + "<br>";
+    output_code += binaryFraction;
+    cumulativeProbability += fraction;
+  }
+  document.getElementById("output_table").innerHTML = output_table;
+  document.getElementById("output_code").innerHTML = output_code;
+}
+</script>
 
 </body>
 </html>
