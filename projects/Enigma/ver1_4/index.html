@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enigma - Игра в угадывание</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, p {
+      color: #fff;
+    }
+
+    #logo {
+      max-width: 200px;
+      margin-bottom: 10px;
+    }
+
+    #mode {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    #mode div {
+      text-align: center;
+    }
+
+    .mode-img {
+      cursor: pointer;
+    }
+
+    .mode-img:hover {
+      filter: brightness(150%);
+    }
+
+    #devInfo {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+<div id="logoHeader">
+    <img src="../Enigma, logo (BING AI).jpg" alt="Enigma Logo" id="logo">
+    <h1>Enigma - Игра в угадывание</h1>
+</div>
+
+<div id="modeScreen">
+    <p>Выберите режим игры:</p>
+    <div id="mode">
+      <div>
+        <a href="mode-single.html">
+          <img src="img/img_modes/mode-single.jpg" width="200" alt="Один игрок" class="mode-img">
+          <p>Один игрок</p>
+        </a>
+      </div>
+      <div>
+        <a href="mode-computer.html">
+          <img src="img/img_modes/mode-computer.jpg" width="200" alt="Против компьютера" class="mode-img">
+          <p>Против компьютера</p>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+
+<div id="devInfo">
+    <p>Версия 1.4</p>
+    <p>Разработано Musienko Web Solutions</p>
+</div>
+
+</body>
+</html>
